@@ -9,34 +9,27 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import com.google.android.material.snackbar.Snackbar
 import me.ivaangb.aboutme_codelab.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-
-    lateinit var doneButton: Button
-    lateinit var nicknameTextView: TextView
-    lateinit var nicknameEditText: EditText
     private lateinit var binding: ActivityMainBinding
+
+    private val myName = MyName("Ivan Gz")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.myName = myName
 
 
-        doneButton = findViewById(R.id.done_button)
-        nicknameTextView = findViewById(R.id.nickname_tv)
-        nicknameEditText = findViewById(R.id.nickname_et)
-        doneButton.setOnClickListener { addNickname(it, nicknameTextView, nicknameEditText) }
-
-        nicknameTextView.setOnClickListener { updateNickname(it, doneButton, nicknameEditText) }
-
+        binding.doneButton.setOnClickListener { addNickname(it, binding.nicknameTv, binding.nicknameEt) }
+        binding.nicknameTv.setOnClickListener { updateNickname(it, binding.doneButton, binding.nicknameEt) }
     }
 
     private fun addNickname(view: View, textView: TextView, editText: EditText) {
         val snackbar = Snackbar.make(view, getString(R.string.nickname_snackbar_error), Snackbar.LENGTH_SHORT)
-
-
         if (!editText.text.isNullOrEmpty()) {
             textView.text = editText.text
             editText.visibility = View.GONE
@@ -61,6 +54,4 @@ class MainActivity : AppCompatActivity() {
         inputMethodManager.showSoftInput(editText, 0)
 
     }
-
-
 }
